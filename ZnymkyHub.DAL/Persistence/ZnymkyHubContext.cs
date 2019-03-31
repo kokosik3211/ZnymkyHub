@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ZnymkyHub.DAL.Core.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-//using ZnymkyHub.DAL.Persistence.EntityConfigurations;
+using ZnymkyHub.DAL.Persistence.EntityConfigurations;
 
 namespace ZnymkyHub.DAL.Persistence
 {
@@ -30,6 +30,21 @@ namespace ZnymkyHub.DAL.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.ApplyConfiguration(new RoleConfigurations());
+            builder.ApplyConfiguration(new UserConfigurations());
+            builder.ApplyConfiguration(new PhotoshootTypeConfigurations());
+            builder.ApplyConfiguration(new UserPhotoshootTypeConfigurations());
+            builder.ApplyConfiguration(new PhotoResolutionConfigurations());
+            builder.ApplyConfiguration(new PhotoshootConfigurations());
+            builder.ApplyConfiguration(new PhotoConfigurations());
+            builder.ApplyConfiguration(new OutgoingCityConfigurations());
+            builder.ApplyConfiguration(new PhotographerOutgoingCityConfiguration());
+            builder.ApplyConfiguration(new LikeConfiguration());
+            builder.ApplyConfiguration(new SavingConfiguration());
+            builder.ApplyConfiguration(new CommentConfiguration());
+            builder.ApplyConfiguration(new FavouritePhotographerConfiguration());
+            builder.ApplyConfiguration(new ChatConfiguration());
         }
     }
 }

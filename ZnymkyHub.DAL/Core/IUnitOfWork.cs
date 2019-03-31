@@ -5,7 +5,7 @@ using ZnymkyHub.DAL.Core.Repositories;
 
 namespace ZnymkyHub.DAL.Core
 {
-    interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         IRoleRepository Roles { get; }
         IUserRepository Users { get; }
