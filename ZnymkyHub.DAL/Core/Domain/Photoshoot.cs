@@ -14,6 +14,8 @@ namespace ZnymkyHub.DAL.Core.Domain
         public int PhotoshootTypeId { get; set; }
         public virtual PhotoshootType PhotoshootType { get; set; }
 
+        public string Name { get; set; }
+
         public string Description { get; set; }
 
         public virtual ICollection<Photo> Photos { get; set; } = new HashSet<Photo>();

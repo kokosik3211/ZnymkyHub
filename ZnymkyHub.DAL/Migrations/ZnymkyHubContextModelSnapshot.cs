@@ -271,6 +271,8 @@ namespace ZnymkyHub.DAL.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<string>("Name");
+
                     b.Property<int>("PhotographerId");
 
                     b.Property<int>("PhotoshootTypeId");

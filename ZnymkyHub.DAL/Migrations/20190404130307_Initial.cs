@@ -285,6 +285,7 @@ namespace ZnymkyHub.DAL.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     PhotographerId = table.Column<int>(nullable: false),
                     PhotoshootTypeId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

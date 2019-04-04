@@ -59,4 +59,9 @@ namespace ZnymkyHub.DAL.Core.Domain
         public virtual ICollection<FavouritePhotographer> FavouritePhotographerUsers { get; set; } = new HashSet<FavouritePhotographer>();
 
     }
+
+    public class AuthorizedUser : User
+    {
+
+    }
 }

@@ -10,7 +10,7 @@ using ZnymkyHub.DAL.Persistence;
 namespace ZnymkyHub.DAL.Migrations
 {
     [DbContext(typeof(ZnymkyHubContext))]
-    [Migration("20190331101521_Initial")]
+    [Migration("20190404130307_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -272,6 +272,8 @@ namespace ZnymkyHub.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description");
+
+                    b.Property<string>("Name");
 
                     b.Property<int>("PhotographerId");
 

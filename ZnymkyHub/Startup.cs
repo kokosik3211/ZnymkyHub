@@ -20,11 +20,13 @@ namespace ZnymkyHub
     public class Startup
     {
         private readonly string ConnectionString;
+        private readonly bool Default;
 
         public Startup(IConfiguration configuration)
         {
+            Default = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
             Configuration = configuration;
-            ConnectionString = Configuration.GetConnectionString("DefaultConnection");
+            ConnectionString = Default ? Configuration.GetConnectionString("DefaultConnection") : Configuration.GetConnectionString("SpecificConnection");
         }
 
         public IConfiguration Configuration { get; }
@@ -59,7 +61,7 @@ namespace ZnymkyHub
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<User> userManager, RoleManager<Role> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -75,7 +77,7 @@ namespace ZnymkyHub
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-
+            IdentityDataInitializer.SeedData(userManager, roleManager).Wait();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
