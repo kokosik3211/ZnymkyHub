@@ -21,7 +21,7 @@ namespace ZnymkyHub.DAL.Core.Domain
 
         public string HomeTown { get; set; }
 
-        public string ProfilePhoto { get; set; }
+        public byte[] ProfilePhoto { get; set; }
 
         public string ProfilePhotoName { get; set; }
 
