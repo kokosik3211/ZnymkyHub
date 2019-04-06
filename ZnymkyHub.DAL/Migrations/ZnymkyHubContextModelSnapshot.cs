@@ -150,34 +150,34 @@ namespace ZnymkyHub.DAL.Migrations
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.FavouritePhotographer", b =>
                 {
-                    b.Property<int>("Id");
-
                     b.Property<int>("UserId");
 
                     b.Property<int>("PhotographerId");
 
-                    b.HasKey("Id", "UserId", "PhotographerId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("UserId", "PhotographerId");
 
                     b.HasIndex("PhotographerId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("FavouritePhotographers");
                 });
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Like", b =>
                 {
-                    b.Property<int>("Id");
-
                     b.Property<int>("UserId");
 
                     b.Property<int>("PhotoId");
 
-                    b.HasKey("Id", "UserId", "PhotoId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("UserId", "PhotoId");
 
                     b.HasIndex("PhotoId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Likes");
                 });
@@ -224,19 +224,19 @@ namespace ZnymkyHub.DAL.Migrations
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.PhotographerOutgoingCity", b =>
                 {
-                    b.Property<int>("Id");
-
                     b.Property<int>("PhotographerId");
 
                     b.Property<int>("OutgoingCityId");
 
                     b.Property<int>("AdditionalPayment");
 
-                    b.HasKey("Id", "PhotographerId", "OutgoingCityId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("PhotographerId", "OutgoingCityId");
 
                     b.HasIndex("OutgoingCityId");
-
-                    b.HasIndex("PhotographerId");
 
                     b.ToTable("PhotographerOutgoingCities");
                 });
@@ -279,10 +279,9 @@ namespace ZnymkyHub.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PhotoshootTypeId");
+                    b.HasIndex("PhotographerId");
 
-                    b.HasIndex("PhotographerId", "PhotoshootTypeId")
-                        .IsUnique();
+                    b.HasIndex("PhotoshootTypeId");
 
                     b.ToTable("Photoshoots");
                 });
@@ -327,17 +326,17 @@ namespace ZnymkyHub.DAL.Migrations
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Saving", b =>
                 {
-                    b.Property<int>("Id");
-
                     b.Property<int>("UserId");
 
                     b.Property<int>("PhotoId");
 
-                    b.HasKey("Id", "UserId", "PhotoId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("UserId", "PhotoId");
 
                     b.HasIndex("PhotoId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Savings");
                 });
@@ -421,17 +420,17 @@ namespace ZnymkyHub.DAL.Migrations
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.UserPhotoshootType", b =>
                 {
-                    b.Property<int>("Id");
-
                     b.Property<int>("PhotographerId");
 
                     b.Property<int>("PhotoshootTypeId");
 
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("Price");
 
-                    b.HasKey("Id", "PhotographerId", "PhotoshootTypeId");
-
-                    b.HasIndex("PhotographerId");
+                    b.HasKey("PhotographerId", "PhotoshootTypeId");
 
                     b.HasIndex("PhotoshootTypeId");
 

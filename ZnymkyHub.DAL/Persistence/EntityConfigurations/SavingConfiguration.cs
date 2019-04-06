@@ -11,7 +11,9 @@ namespace ZnymkyHub.DAL.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Saving> builder)
         {
-            builder.HasKey(p => new { p.Id, p.UserId, p.PhotoId });
+            builder.HasKey(p => new { p.UserId, p.PhotoId });
+
+            builder.Property(p => p.Id).ValueGeneratedOnAdd();
 
             builder.HasOne(saving => saving.User)
                 .WithMany(user => user.Savings)

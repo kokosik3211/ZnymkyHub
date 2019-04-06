@@ -11,7 +11,9 @@ namespace ZnymkyHub.DAL.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<UserPhotoshootType> builder)
         {
-            builder.HasKey(p => new {p.Id, p.PhotographerId, p.PhotoshootTypeId });
+            builder.HasKey(p => new { p.PhotographerId, p.PhotoshootTypeId });
+
+            builder.Property(p => p.Id).ValueGeneratedOnAdd();
 
             builder.HasOne(userphType => userphType.Photographer)
                 .WithMany(photographer => photographer.UserPhotoshootTypes)

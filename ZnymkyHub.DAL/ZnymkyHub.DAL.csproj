@@ -21,4 +21,7 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SQLScripts\" />
+  </ItemGroup>
 </Project>

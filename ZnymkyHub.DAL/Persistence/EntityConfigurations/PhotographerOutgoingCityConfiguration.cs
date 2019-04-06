@@ -11,7 +11,9 @@ namespace ZnymkyHub.DAL.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<PhotographerOutgoingCity> builder)
         {
-            builder.HasKey(p => new { p.Id, p.PhotographerId, p.OutgoingCityId });
+            builder.HasKey(p => new { p.PhotographerId, p.OutgoingCityId });
+
+            builder.Property(p => p.Id).ValueGeneratedOnAdd();
 
             builder.HasOne(phCity => phCity.Photographer)
                 .WithMany(ph => ph.PhotographerOutgoingCities)

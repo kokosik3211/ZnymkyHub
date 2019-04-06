@@ -13,8 +13,8 @@ namespace ZnymkyHub.DAL.Persistence.EntityConfigurations
         {
             builder.HasKey(p => p.Id);
 
-            builder.HasIndex(i => new { i.PhotographerId, i.PhotoshootTypeId })
-                .IsUnique();
+            /*builder.HasIndex(i => new { i.PhotographerId, i.PhotoshootTypeId })
+                .IsUnique();*/
 
             builder.HasOne(photoshoot => photoshoot.Photographer)
                 .WithMany(photographer => photographer.Photoshoots)
