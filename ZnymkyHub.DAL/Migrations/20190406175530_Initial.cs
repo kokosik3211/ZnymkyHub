@@ -94,7 +94,7 @@ namespace ZnymkyHub.DAL.Migrations
                     LastName = table.Column<string>(nullable: true),
                     RoleId = table.Column<int>(nullable: false),
                     HomeTown = table.Column<string>(nullable: true),
-                    ProfilePhoto = table.Column<string>(nullable: true),
+                    ProfilePhoto = table.Column<byte[]>(nullable: true),
                     ProfilePhotoName = table.Column<string>(nullable: true),
                     RegistrationDate = table.Column<DateTime>(nullable: false),
                     FacebookUrl = table.Column<string>(nullable: true),
@@ -424,9 +424,9 @@ namespace ZnymkyHub.DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Original = table.Column<string>(nullable: true),
-                    Medium = table.Column<string>(nullable: true),
-                    Small = table.Column<string>(nullable: true),
+                    Original = table.Column<byte[]>(nullable: true),
+                    Medium = table.Column<byte[]>(nullable: true),
+                    Small = table.Column<byte[]>(nullable: true),
                     PhotoId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

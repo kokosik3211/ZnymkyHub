@@ -7,6 +7,7 @@ namespace ZnymkyHub.DAL.Persistence
 {
     public class ZnymkyHubContext : IdentityDbContext<User,Role,int> 
     {
+        public ZnymkyHubContext() { }
         public ZnymkyHubContext(DbContextOptions<ZnymkyHubContext> options) : base(options) { }
 
         public virtual DbSet<PhotoshootType> PhotoshootTypes { get; set; }
@@ -25,6 +26,11 @@ namespace ZnymkyHub.DAL.Persistence
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies();
+
+            /*string connection = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows)
+                ? "Data Source=(localdb)\\\\MSSQLLocalDB;Initial Catalog=ZnymkyHubDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+                : "Data Source=localhost;Initial Catalog=ZnymkyHubDB;User ID=sa;Password=reallyStrongPwd123;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            optionsBuilder.UseSqlServer(connection);*/
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

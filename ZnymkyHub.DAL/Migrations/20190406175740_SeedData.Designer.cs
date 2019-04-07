@@ -10,8 +10,8 @@ using ZnymkyHub.DAL.Persistence;
 namespace ZnymkyHub.DAL.Migrations
 {
     [DbContext(typeof(ZnymkyHubContext))]
-    [Migration("20190406111544_Initial")]
-    partial class Initial
+    [Migration("20190406175740_SeedData")]
+    partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -249,13 +249,13 @@ namespace ZnymkyHub.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Medium");
+                    b.Property<byte[]>("Medium");
 
-                    b.Property<string>("Original");
+                    b.Property<byte[]>("Original");
 
                     b.Property<int>("PhotoId");
 
-                    b.Property<string>("Small");
+                    b.Property<byte[]>("Small");
 
                     b.HasKey("Id");
 
@@ -388,7 +388,7 @@ namespace ZnymkyHub.DAL.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<string>("ProfilePhoto");
+                    b.Property<byte[]>("ProfilePhoto");
 
                     b.Property<string>("ProfilePhotoName");
 

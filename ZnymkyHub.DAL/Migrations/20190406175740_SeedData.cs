@@ -7,8 +7,8 @@ namespace ZnymkyHub.DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            string path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).ToString(), "ZnymkyHub.DAL", "SQLScripts", "Inserting_data_script.sql");
-            migrationBuilder.Sql(File.ReadAllText(path));
+            string script = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).ToString(), "ZnymkyHub.DAL", "InitialPhotos", "SeedData.sql");
+            migrationBuilder.Sql(File.ReadAllText(script));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
