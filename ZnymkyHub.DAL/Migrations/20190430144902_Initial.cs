@@ -94,6 +94,7 @@ namespace ZnymkyHub.DAL.Migrations
                     LastName = table.Column<string>(nullable: true),
                     RoleId = table.Column<int>(nullable: false),
                     HomeTown = table.Column<string>(nullable: true),
+                    Gender = table.Column<string>(nullable: false),
                     ProfilePhoto = table.Column<byte[]>(nullable: true),
                     ProfilePhotoName = table.Column<string>(nullable: true),
                     RegistrationDate = table.Column<DateTime>(nullable: false),

@@ -10,7 +10,7 @@ using ZnymkyHub.DAL.Persistence;
 namespace ZnymkyHub.DAL.Migrations
 {
     [DbContext(typeof(ZnymkyHubContext))]
-    [Migration("20190406175740_SeedData")]
+    [Migration("20190430145234_SeedData")]
     partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -365,6 +365,9 @@ namespace ZnymkyHub.DAL.Migrations
                     b.Property<string>("FacebookUrl");
 
                     b.Property<string>("FirstName");
+
+                    b.Property<string>("Gender")
+                        .IsRequired();
 
                     b.Property<string>("HomeTown");
 

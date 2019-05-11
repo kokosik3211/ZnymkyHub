@@ -364,6 +364,9 @@ namespace ZnymkyHub.DAL.Migrations
 
                     b.Property<string>("FirstName");
 
+                    b.Property<string>("Gender")
+                        .IsRequired();
+
                     b.Property<string>("HomeTown");
 
                     b.Property<string>("InstagramUrl");

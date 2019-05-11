@@ -9,7 +9,7 @@ namespace ZnymkyHub.DAL.Persistence
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ZnymkyHubContext _context;
+        public readonly ZnymkyHubContext _context;
 
         public UnitOfWork (ZnymkyHubContext context)
         {
@@ -29,7 +29,13 @@ namespace ZnymkyHub.DAL.Persistence
             FavouritePhotographers = new FavouritePhotographerRepository(_context);
             Chats = new ChatRepository(_context);
         }
-
+        public ZnymkyHubContext Context
+        {
+            get
+            {
+                return _context;
+            }
+        }
         public IRoleRepository Roles { get; private set; }
         public IUserRepository Users { get; private set; }
         public IPhotoshootTypeRepository PhotoshootTypes { get; private set; }
@@ -48,6 +54,11 @@ namespace ZnymkyHub.DAL.Persistence
         public int Commit()
         {
             return _context.SaveChanges();
+        }
+
+        public async System.Threading.Tasks.Task<int> CommitAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
 
         public void Dispose()
