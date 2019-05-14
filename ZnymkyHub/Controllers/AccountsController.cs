@@ -38,7 +38,7 @@ namespace ZnymkyHub.Controllers
             var userIdentity = //_mapper.Map<User>(model);
                 new User
                 {
-                    UserName = "krk",
+                    UserName = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
@@ -51,6 +51,9 @@ namespace ZnymkyHub.Controllers
             var result = await _userManager.CreateAsync(userIdentity, model.Password);
 
             if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            var add_role = await _userManager.AddToRoleAsync(user, user.Role.Name);
 
             //await _unitOfWork.Users.AddAsync(new Customer { IdentityId = userIdentity.Id, Location = model.Location });
             //await _unitOfWork.CommitAsync();
