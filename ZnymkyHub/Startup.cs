@@ -62,6 +62,8 @@ namespace ZnymkyHub
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
+            services.Configure<FacebookAuthSettings>(Configuration.GetSection(nameof(FacebookAuthSettings)));
+
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
 
