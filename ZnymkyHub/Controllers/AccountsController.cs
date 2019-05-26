@@ -45,7 +45,8 @@ namespace ZnymkyHub.Controllers
                     HomeTown = model.HomeTown,
                     RoleId = 3,
                     InstagramUrl = model.InstagramUrl,
-                    EmailConfirmed = model.EmailConfirmed
+                    EmailConfirmed = model.EmailConfirmed,
+                    RegistrationDate = DateTime.Now
                 };
 
             var result = await _userManager.CreateAsync(userIdentity, model.Password);

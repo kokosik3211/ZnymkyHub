@@ -13,6 +13,8 @@ namespace ZnymkyHub.DAL.Persistence
         }
         public ZnymkyHubContext(DbContextOptions<ZnymkyHubContext> options) : base(options) { }
 
+        public virtual DbSet<Photographer> Photographers { get; set; }
+        public virtual DbSet<AuthorizedUser> AuthorizedUsers { get; set; }
         public virtual DbSet<PhotoshootType> PhotoshootTypes { get; set; }
         public virtual DbSet<UserPhotoshootType> UserPhotoshootTypes { get; set; }
         public virtual DbSet<Photo> Photos { get; set; }

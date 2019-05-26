@@ -78,7 +78,8 @@ namespace ZnymkyHub.Controllers
                     UserName = userInfo.Email,
                     RoleId = 3,
                     //PictureUrl = userInfo.Picture.Data.Url
-                    ProfilePhoto = picture
+                    ProfilePhoto = picture,
+                    RegistrationDate = DateTime.Now
                 };
 
                 var result = await _userManager.CreateAsync(newUser, Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8));

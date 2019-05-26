@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZnymkyHub", "ZnymkyHub\Znym
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZnymkyHub.DAL", "ZnymkyHub.DAL\ZnymkyHub.DAL.csproj", "{B1E1E909-5B92-4614-9AE5-60B51957BCEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZnymkyHub.DTO", "ZnymkyHub.DTO\ZnymkyHub.DTO.csproj", "{824805B6-FF3F-413B-B31F-4CE536414C0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B1E1E909-5B92-4614-9AE5-60B51957BCEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1E1E909-5B92-4614-9AE5-60B51957BCEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1E1E909-5B92-4614-9AE5-60B51957BCEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{824805B6-FF3F-413B-B31F-4CE536414C0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{824805B6-FF3F-413B-B31F-4CE536414C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{824805B6-FF3F-413B-B31F-4CE536414C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{824805B6-FF3F-413B-B31F-4CE536414C0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

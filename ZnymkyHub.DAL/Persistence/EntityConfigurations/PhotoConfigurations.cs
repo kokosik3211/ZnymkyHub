@@ -25,6 +25,12 @@ namespace ZnymkyHub.DAL.Persistence.EntityConfigurations
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired(false);
 
+            builder.HasOne(photo => photo.PhotoshootType)
+                .WithMany(phshoottype => phshoottype.Photos)
+                .HasForeignKey(photo => photo.PhotoshootTypeId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired(false);
+
             builder.HasOne(photo => photo.PhotoResolution)
                 .WithOne(phResolution => phResolution.Photo)
                 .HasForeignKey<PhotoResolution>(phResolution => phResolution.PhotoId);

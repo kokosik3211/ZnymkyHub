@@ -122,19 +122,20 @@ namespace ZnymkyHub
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 3;
             });
-            builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
+            builder = builder.AddRoles<Role>();
+            builder = new IdentityBuilder(builder.UserType, builder.RoleType, builder.Services);
             builder.AddEntityFrameworkStores<ZnymkyHubContext>().AddDefaultTokenProviders();
 
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+            services.AddCors(/*options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader()));
+                .AllowAnyHeader())*/);
 
             services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env /*UserManager<User> userManager, RoleManager<Role> roleManager*/
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<User> userManager, RoleManager<Role> roleManager
             )
         {
             if (env.IsDevelopment())
@@ -165,14 +166,16 @@ namespace ZnymkyHub
                         });
                 });
 
-            app.UseCors("AllowAll");
-
+            //app.UseCors("AllowAll");
+            app.UseCors(builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
             //app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseDefaultFiles();
             app.UseStaticFiles();
             //app.UseCookiePolicy();
-            //IdentityDataInitializer.SeedData(userManager, roleManager).Wait();
+            IdentityDataInitializer.SeedData(userManager, roleManager).Wait();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

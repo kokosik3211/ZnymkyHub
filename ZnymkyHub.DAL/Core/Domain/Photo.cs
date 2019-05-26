@@ -16,6 +16,9 @@ namespace ZnymkyHub.DAL.Core.Domain
         public int? PhotoshootId { get; set; }
         public virtual Photoshoot Photoshoot { get; set; }
 
+        public int? PhotoshootTypeId { get; set; }
+        public virtual PhotoshootType PhotoshootType { get; set; }
+
         public virtual PhotoResolution PhotoResolution { get; set; }
 
         public DateTime DateTime { get; set; }

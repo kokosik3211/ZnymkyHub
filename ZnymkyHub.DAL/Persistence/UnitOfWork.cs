@@ -14,6 +14,8 @@ namespace ZnymkyHub.DAL.Persistence
         public UnitOfWork (ZnymkyHubContext context)
         {
             _context = context;
+            Photographers = new PhotographerRepository(_context);
+            AuthorizedUsers = new AuthorizedUserRepository(_context);
             Roles = new RoleRepository(_context);
             Users = new UserRepository(_context);
             PhotoshootTypes = new PhotoshootTypeRepository(_context);
@@ -36,6 +38,8 @@ namespace ZnymkyHub.DAL.Persistence
                 return _context;
             }
         }
+        public IPhotographerRepository Photographers { get; private set; }
+        public IAuthorizedUserRepository AuthorizedUsers { get; private set; }
         public IRoleRepository Roles { get; private set; }
         public IUserRepository Users { get; private set; }
         public IPhotoshootTypeRepository PhotoshootTypes { get; private set; }

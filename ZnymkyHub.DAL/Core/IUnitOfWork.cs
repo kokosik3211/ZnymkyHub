@@ -10,6 +10,8 @@ namespace ZnymkyHub.DAL.Core
     public interface IUnitOfWork : IDisposable
     {
         ZnymkyHubContext Context { get; }
+        IPhotographerRepository Photographers { get; }
+        IAuthorizedUserRepository AuthorizedUsers { get; }
         IRoleRepository Roles { get; }
         IUserRepository Users { get; }
         IPhotoshootTypeRepository PhotoshootTypes { get; }
