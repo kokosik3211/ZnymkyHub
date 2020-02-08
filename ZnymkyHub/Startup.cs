@@ -130,7 +130,7 @@ namespace ZnymkyHub
                 .AllowAnyMethod()
                 .AllowAnyHeader())*/);
 
-            services.AddAutoMapper();
+            //services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -175,7 +175,7 @@ namespace ZnymkyHub
             app.UseDefaultFiles();
             app.UseStaticFiles();
             //app.UseCookiePolicy();
-            IdentityDataInitializer.SeedData(userManager, roleManager).Wait();
+            //sIdentityDataInitializer.SeedData(userManager, roleManager).Wait();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

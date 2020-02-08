@@ -36,7 +36,7 @@ namespace ZnymkyHub.DAL.Persistence
             {
                 string connection = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows)
                 ? "Data Source=(localdb)\\\\MSSQLLocalDB;Initial Catalog=ZnymkyHubDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
-                : "Data Source=localhost;Initial Catalog=ZnymkyHubDB;User ID=sa;Password=reallyStrongPwd123;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+                : "Data Source=localhost;Initial Catalog=ZnymkyHubDB;User ID=sa;Password=YourStrong@Passw0rd;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
                 optionsBuilder.UseSqlServer(connection);
             }
 

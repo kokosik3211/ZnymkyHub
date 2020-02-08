@@ -18,12 +18,12 @@ namespace ZnymkyHub.Controllers
     public class AccountsController : BaseController
     {
         private readonly UserManager<User> _userManager;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
 
-        public AccountsController(UserManager<User> userManager, IMapper mapper, IUnitOfWork unitOfWork) : base(unitOfWork)
+        public AccountsController(UserManager<User> userManager, /*IMapper mapper,*/ IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _userManager = userManager;
-            _mapper = mapper;
+            //_mapper = mapper;
         }
 
         // POST api/accounts
