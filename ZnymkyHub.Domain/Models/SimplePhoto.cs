@@ -1,7 +1,7 @@
-﻿using System;
-namespace ZnymkyHub.DTO.Core
+﻿
+namespace ZnymkyHub.Domain.Models
 {
-    public class SimplePhotoDTO
+    public class SimplePhoto
     {
         public int id { get; set; }
         public string base64 { get; set; }

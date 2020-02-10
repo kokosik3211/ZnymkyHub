@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ZnymkyHub.DAL.Core;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.PixelFormats;
@@ -11,12 +10,13 @@ using SixLabors.ImageSharp.Processing;
 using SixLabors.Primitives;
 using SixLabors.Shapes;
 using SixLabors.ImageSharp.Formats.Png;
-using ZnymkyHub.DTO.Core;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using ZnymkyHub.DAL.Core.Domain;
+using ZnymkyHub.Domain.Models;
+using ZnymkyHub.Infrastructure.EF.Entities;
+using ZnymkyHub.Infrastructure.EF;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,21 +26,21 @@ namespace ZnymkyHub.Controllers
     //[Consumes("application/json", "multipart/form-data")]
     public class ImageController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ZnymkyHubContext _dbContext;
         private readonly ClaimsPrincipal _caller;
 
 
-        public ImageController(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
+        public ImageController(ZnymkyHubContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
             _caller = httpContextAccessor.HttpContext.User;
         }
 
         [HttpPost]
         public IActionResult GetImage()
         {
-            var kek = _unitOfWork.PhotoResolutions.Get(1).Original;
-            var lol = _unitOfWork.Context.PhotoResolutions.Where(p => p.Id == 1).Select(p => new { Id = p.Id, Small = p.Small }).FirstOrDefault();
+            var kek = _dbContext.PhotoResolutions.Find(1).Original;
+            var lol = _dbContext.PhotoResolutions.Where(p => p.Id == 1).Select(p => new { Id = p.Id, Small = p.Small }).FirstOrDefault();
             Image<Rgba32> image = Image.Load(lol.Small);
             string base64 = image.ToBase64String(PngFormat.Instance);
             return new OkObjectResult(base64);
@@ -61,11 +61,11 @@ namespace ZnymkyHub.Controllers
             imageToSave = MakeImgSquare(imageToSave);
             byte[] newphoto = ImgToByteArray(imageToSave, PngFormat.Instance);
 
-            var user = _unitOfWork.Users.Get(id);
+            var user = _dbContext.Users.Find(id);
             user.ProfilePhoto = newphoto;
-            _unitOfWork.Commit();
+            await _dbContext.SaveChangesAsync();
 
-            var imageToSend = _unitOfWork.Users.Get(id).ProfilePhoto;
+            var imageToSend = _dbContext.Users.Find(id).ProfilePhoto;
 
             Image<Rgba32> image = Image.Load(imageToSend);
             string base64 = image.ToBase64String(PngFormat.Instance);
@@ -89,7 +89,7 @@ namespace ZnymkyHub.Controllers
 
             var userId = _caller.Claims.Single(c => c.Type == "id");
             pType = pType.ToLower().Replace(' ', '_');
-            var pTypeId = _unitOfWork.Context.PhotoshootTypes.FirstOrDefault(x => x.Name == pType).Id;
+            var pTypeId = _dbContext.PhotoshootTypes.FirstOrDefault(x => x.Name == pType).Id;
 
             var photo = new Photo
             {
@@ -100,17 +100,17 @@ namespace ZnymkyHub.Controllers
                 NumberOfLikes = 0,
                 NumberOfSaving = 0
             };
-            _unitOfWork.Photos.Add(photo);
-            _unitOfWork.Commit();
+            _dbContext.Photos.Add(photo);
+            await _dbContext.SaveChangesAsync();
 
-            _unitOfWork.PhotoResolutions.Add(new PhotoResolution
+            _dbContext.PhotoResolutions.Add(new PhotoResolution
             {
                 PhotoId = photo.Id,
                 Original = ImgToByteArray(resizedImgs.Item1, PngFormat.Instance),
                 Medium = ImgToByteArray(resizedImgs.Item2, PngFormat.Instance),
                 Small = ImgToByteArray(resizedImgs.Item3, PngFormat.Instance)
             });
-            _unitOfWork.Commit();
+            await _dbContext.SaveChangesAsync();
             //byte[] newphoto = ImgToByteArray(imageToSave, PngFormat.Instance);
 
             return Ok("suka added");
@@ -120,15 +120,15 @@ namespace ZnymkyHub.Controllers
         [Route("{id}/{current}")]
         public IActionResult GetPhotosForPhotoArea([FromRoute]int id, [FromRoute]int current)
         {
-            var photographer = _unitOfWork.Photographers.Get(id);
+            var photographer = _dbContext.Photographers.Find(id);
             var photos = photographer.Photos.Reverse().Skip((current - 1) * 15).Take(15);
 
-            var originals = new List<SimplePhotoDTO>();
+            var originals = new List<SimplePhoto>();
             Image<Rgba32> photo;
             foreach(var elem in photos)
             {
                 photo = Image.Load(elem.PhotoResolution.Small);
-                originals.Add(new SimplePhotoDTO {
+                originals.Add(new SimplePhoto {
                     id = elem.Id,
                     name = elem.Name,
                     base64 = photo.ToBase64String(PngFormat.Instance),
@@ -145,7 +145,7 @@ namespace ZnymkyHub.Controllers
         [Route("{id}")]
         public IActionResult GetInfoForPhotoPaginator([FromRoute]int id)
         {
-            int count = _unitOfWork.Context.Photos.Count(p => p.PhotographerId == id);
+            int count = _dbContext.Photos.Count(p => p.PhotographerId == id);
             return Ok(count);
         }
 

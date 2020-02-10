@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using ZnymkyHub.DAL.Core.Domain;
+using ZnymkyHub.Infrastructure.EF.Entities;
 
 namespace AuthWebApi.Controllers
 {

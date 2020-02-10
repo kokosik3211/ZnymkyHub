@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ZnymkyHub.DAL.Core;
-using ZnymkyHub.DAL.Core.Domain;
+using ZnymkyHub.Infrastructure.EF.Entities;
+using ZnymkyHub.Infrastructure.EF;
 
 namespace ZnymkyHub.Controllers
 {
@@ -17,12 +17,12 @@ namespace ZnymkyHub.Controllers
     public class ProfileController : Controller
     {
         private readonly ClaimsPrincipal _caller;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ZnymkyHubContext _dbContext;
 
-        public ProfileController(UserManager<User> userManager, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
+        public ProfileController(UserManager<User> userManager, ZnymkyHubContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _caller = httpContextAccessor.HttpContext.User;
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
         }
 
         // GET api/profile/me
@@ -31,7 +31,7 @@ namespace ZnymkyHub.Controllers
         {
             // retrieve the user info
             var userId = _caller.Claims.Single(c => c.Type == "id");
-            var customer = await _unitOfWork.Context.Users.SingleAsync(c => c.Id.ToString() == userId.Value);
+            var customer = await _dbContext.Users.SingleAsync(c => c.Id.ToString() == userId.Value);
 
             return new OkObjectResult(new
             {

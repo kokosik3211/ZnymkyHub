@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ZnymkyHub.DAL.Core;
-using ZnymkyHub.DAL.Core.Domain;
+using ZnymkyHub.Infrastructure.EF;
+using ZnymkyHub.Infrastructure.EF.Entities;
 using ZnymkyHub.Helpers;
 using ZnymkyHub.ViewModels;
 
@@ -18,12 +16,14 @@ namespace ZnymkyHub.Controllers
     public class AccountsController : BaseController
     {
         private readonly UserManager<User> _userManager;
-        //private readonly IMapper _mapper;
+        private readonly IMapper _mapper;
 
-        public AccountsController(UserManager<User> userManager, /*IMapper mapper,*/ IUnitOfWork unitOfWork) : base(unitOfWork)
+        public AccountsController(UserManager<User> userManager,
+            IMapper mapper,
+            ZnymkyHubContext dbContext) : base(dbContext)
         {
             _userManager = userManager;
-            //_mapper = mapper;
+            _mapper = mapper;
         }
 
         // POST api/accounts
@@ -35,8 +35,8 @@ namespace ZnymkyHub.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userIdentity = //_mapper.Map<User>(model);
-                new User
+            var userIdentity = _mapper.Map<User>(model);
+                /*new User
                 {
                     UserName = model.Email,
                     FirstName = model.FirstName,
@@ -47,7 +47,7 @@ namespace ZnymkyHub.Controllers
                     InstagramUrl = model.InstagramUrl,
                     EmailConfirmed = model.EmailConfirmed,
                     RegistrationDate = DateTime.Now
-                };
+                };*/
 
             var result = await _userManager.CreateAsync(userIdentity, model.Password);
 

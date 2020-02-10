@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
-using ZnymkyHub.DAL.Core;
-using ZnymkyHub.DAL.Core.Domain;
-using ZnymkyHub.DTO.Core;
+using ZnymkyHub.Infrastructure.EF.Entities;
+using ZnymkyHub.Domain.Models;
+using ZnymkyHub.Infrastructure.EF;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,11 +17,11 @@ namespace ZnymkyHub.Controllers
     [Route("api/[controller]/[action]")]
     public class SearchController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ZnymkyHubContext _dbContext;
 
-        public SearchController(IUnitOfWork unitOfWork)
+        public SearchController(ZnymkyHubContext dbContext)
         {
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
         }
 
         [HttpPost]
@@ -29,9 +29,9 @@ namespace ZnymkyHub.Controllers
         public IActionResult PerformSearch(string selectedCity, string selectedPhType)
         {
             selectedPhType = selectedPhType.ToLower().Replace(' ', '_');
-            var photographers = _unitOfWork.Context.Photographers.Where(p => p.HomeTown == selectedCity && p.UserPhotoshootTypes.Any(v => v.PhotoshootType.Name == selectedPhType)).ToList();
+            var photographers = _dbContext.Photographers.Where(p => p.HomeTown == selectedCity && p.UserPhotoshootTypes.Any(v => v.PhotoshootType.Name == selectedPhType)).ToList();
 
-            List<SimpleSearchResultDTO> searchResult = new List<SimpleSearchResultDTO>();
+            List<SimpleSearchResult> searchResult = new List<SimpleSearchResult>();
             Image<Rgba32> photo;
             foreach (var elem in photographers)
             {
@@ -46,7 +46,7 @@ namespace ZnymkyHub.Controllers
                     base64 = photo.ToBase64String(PngFormat.Instance);
                 }
 
-                searchResult.Add(new SimpleSearchResultDTO
+                searchResult.Add(new SimpleSearchResult
                 {
                     id = elem.Id,
                     firstName = elem.FirstName,
@@ -61,14 +61,14 @@ namespace ZnymkyHub.Controllers
             return Ok(searchResult);
         }
 
-        private List<SimplePhotoDTO> MapToSimplePhoto(List<Photo> photos)
+        private List<SimplePhoto> MapToSimplePhoto(List<Photo> photos)
         {
-            List<SimplePhotoDTO> simples = new List<SimplePhotoDTO>();
+            List<SimplePhoto> simples = new List<SimplePhoto>();
             Image<Rgba32> photo;
             foreach (var elem in photos)
             {
                 photo = Image.Load(elem.PhotoResolution.Small);
-                simples.Add(new SimplePhotoDTO
+                simples.Add(new SimplePhoto
                 {
                     id = elem.Id,
                     name = elem.Name,

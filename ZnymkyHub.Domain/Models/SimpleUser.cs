@@ -1,7 +1,7 @@
 ﻿using System;
-namespace ZnymkyHub.DTO.Core
+namespace ZnymkyHub.Domain.Models
 {
-    public class SimpleUserDTO
+    public class SimpleUser
     {
         public int id { get; set; }
         public string userName { get; set; }

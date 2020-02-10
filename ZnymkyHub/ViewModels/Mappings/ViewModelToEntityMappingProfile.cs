@@ -1,5 +1,5 @@
 ﻿using System;
-using ZnymkyHub.DAL.Core.Domain;
+using ZnymkyHub.Infrastructure.EF.Entities;
 using AutoMapper;
 
 namespace ZnymkyHub.ViewModels.Mappings

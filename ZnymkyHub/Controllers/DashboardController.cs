@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
-using ZnymkyHub.DAL.Core;
-using ZnymkyHub.DAL.Core.Domain;
+using ZnymkyHub.Infrastructure.EF;
+using ZnymkyHub.Infrastructure.EF.Entities;
 
 namespace ZnymkyHub.Controllers
 {
@@ -21,12 +21,12 @@ namespace ZnymkyHub.Controllers
     public class DashboardController : Controller
     {
         private readonly ClaimsPrincipal _caller;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ZnymkyHubContext _dbContext;
 
-        public DashboardController(UserManager<User> userManager, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
+        public DashboardController(UserManager<User> userManager, ZnymkyHubContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _caller = httpContextAccessor.HttpContext.User;
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
         }
 
         // GET api/dashboard/home
@@ -35,7 +35,7 @@ namespace ZnymkyHub.Controllers
         {
             // retrieve the user info
             var userId = _caller.Claims.Single(c => c.Type == "id");
-            var customer = await _unitOfWork.Context.Users.SingleAsync(c => c.Id.ToString() == userId.Value);
+            var customer = await _dbContext.Users.SingleAsync(c => c.Id.ToString() == userId.Value);
 
             string base64 = null;
             if (customer.ProfilePhoto != null)

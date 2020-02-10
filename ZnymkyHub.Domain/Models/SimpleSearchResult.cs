@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ZnymkyHub.DTO.Core
+namespace ZnymkyHub.Domain.Models
 {
-    public class SimpleSearchResultDTO
+    public class SimpleSearchResult
     {
         public int id { get; set; }
         public string firstName { get; set; }
@@ -12,6 +12,6 @@ namespace ZnymkyHub.DTO.Core
         public int price { get; set; }
         public string fullName { get; set; }
         public string base64 { get; set; }
-        public List<SimplePhotoDTO> photos { get; set; }
+        public List<SimplePhoto> photos { get; set; }
     }
 }

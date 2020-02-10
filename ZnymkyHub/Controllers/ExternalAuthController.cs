@@ -11,8 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using ZnymkyHub.DAL.Core.Domain;
-using ZnymkyHub.DAL.Core;
+using ZnymkyHub.Infrastructure.EF.Entities;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.PixelFormats;
@@ -27,18 +26,16 @@ namespace ZnymkyHub.Controllers
     [Route("api/[controller]/[action]")]
     public class ExternalAuthController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<User> _userManager;
         private readonly FacebookAuthSettings _fbAuthSettings;
         private readonly IJwtFactory _jwtFactory;
         private readonly JwtIssuerOptions _jwtOptions;
         private static readonly HttpClient Client = new HttpClient();
 
-        public ExternalAuthController(IOptions<FacebookAuthSettings> fbAuthSettingsAccessor, UserManager<User> userManager, IUnitOfWork unitOfWork, IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
+        public ExternalAuthController(IOptions<FacebookAuthSettings> fbAuthSettingsAccessor, UserManager<User> userManager, IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
         {
             _fbAuthSettings = fbAuthSettingsAccessor.Value;
             _userManager = userManager;
-            _unitOfWork = unitOfWork;
             _jwtFactory = jwtFactory;
             _jwtOptions = jwtOptions.Value;
         }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using ZnymkyHub.DAL.Core;
+using ZnymkyHub.Infrastructure.EF;
+
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,11 +9,11 @@ namespace ZnymkyHub.Controllers
 {
     public class BaseController : Controller
     {
-        protected IUnitOfWork _unitOfWork { get; set; }
+        protected ZnymkyHubContext _dbContext { get; set; }
 
-        public BaseController(IUnitOfWork unitOfWork)
+        public BaseController(ZnymkyHubContext dbContext)
         {
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
         }
     }
 }

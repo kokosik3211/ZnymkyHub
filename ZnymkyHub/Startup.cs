@@ -22,9 +22,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
-using ZnymkyHub.DAL.Core.Domain;
-using ZnymkyHub.DAL.Persistence;
-using ZnymkyHub.DAL.Core;
+using ZnymkyHub.Infrastructure.EF.Entities;
+using ZnymkyHub.Infrastructure.EF;
 using AutoMapper;
 
 namespace ZnymkyHub
@@ -58,7 +57,7 @@ namespace ZnymkyHub
 
             services.AddDbContext<ZnymkyHubContext>(options => options.UseSqlServer(ConnectionString));
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
@@ -130,7 +129,7 @@ namespace ZnymkyHub
                 .AllowAnyMethod()
                 .AllowAnyHeader())*/);
 
-            //services.AddAutoMapper();
+            services.AddAutoMapper(typeof(Startup));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

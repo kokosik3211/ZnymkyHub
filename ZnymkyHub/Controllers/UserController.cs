@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
-using ZnymkyHub.DAL.Core;
-using ZnymkyHub.DAL.Core.Domain;
-using ZnymkyHub.DTO.Core;
+using ZnymkyHub.Infrastructure.EF;
+using ZnymkyHub.Infrastructure.EF.Entities;
+using ZnymkyHub.Domain.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,12 +18,12 @@ namespace ZnymkyHub.Controllers
     [Route("api/[controller]/[action]")]
     public class UserController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ZnymkyHubContext _dbContext;
         private readonly UserManager<User> _userManager;
 
-        public UserController(IUnitOfWork unitOfWork, UserManager<User> userManager)
+        public UserController(ZnymkyHubContext dbContext, UserManager<User> userManager)
         {
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
             _userManager = userManager;
         }
 
@@ -66,8 +66,8 @@ namespace ZnymkyHub.Controllers
         [HttpPost]
         public async Task<IActionResult> PhotographersForMain()
         {
-            var users = _unitOfWork.Context.Photographers.Take(12).ToList();
-            List<SimpleUserDTO> userList = new List<SimpleUserDTO>();
+            var users = _dbContext.Photographers.Take(12).ToList();
+            List<SimpleUser> userList = new List<SimpleUser>();
             foreach(var elem in users)
             {
                 string base64 = null;
@@ -76,7 +76,7 @@ namespace ZnymkyHub.Controllers
                     Image<Rgba32> image = Image.Load(elem.ProfilePhoto);
                     base64 = image.ToBase64String(PngFormat.Instance);
                 }
-                userList.Add(new SimpleUserDTO
+                userList.Add(new SimpleUser
                 {
                     id = elem.Id,
                     userName = elem.UserName,
@@ -95,7 +95,7 @@ namespace ZnymkyHub.Controllers
         [HttpPost]
         public async Task<IActionResult> PhotographersCount()
         {
-            var count = _unitOfWork.Context.Photographers.Count();
+            var count = _dbContext.Photographers.Count();
 
             return Ok(count);
         }
