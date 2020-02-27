@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Net;
 using System.Text;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ using ZnymkyHub.DAL.Core.Domain;
 using ZnymkyHub.DAL.Persistence;
 using ZnymkyHub.DAL.Core;
 using AutoMapper;
+using Microsoft.AspNetCore.Internal;
+using ZnymkyHub.Hubs;
 
 namespace ZnymkyHub
 {
@@ -131,6 +134,10 @@ namespace ZnymkyHub
                 .AllowAnyHeader())*/);
 
             //services.AddAutoMapper();
+            services.AddSignalR(hubOptions =>
+            {
+                //hubOptions.HandshakeTimeout = TimeSpan.MaxValue;
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -148,7 +155,7 @@ namespace ZnymkyHub
                 //app.UseHsts();
             }
 
-            app.UseExceptionHandler(
+            /*app.UseExceptionHandler(
                 builder =>
                 {
                     builder.Run(
@@ -164,18 +171,27 @@ namespace ZnymkyHub
                                 await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
                             }
                         });
-                });
+                });*/
 
-            //app.UseCors("AllowAll");
-            app.UseCors(builder => builder.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
-            //app.UseHttpsRedirection();
-            app.UseAuthentication();
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseHttpsRedirection();
+            //app.UseCors("AllowAll");
+            app.UseCors(builder => builder.WithOrigins("http://localhost:8088")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+            //app.UseHttpsRedirection();
+            app.UseAuthentication();
             //app.UseCookiePolicy();
-            //sIdentityDataInitializer.SeedData(userManager, roleManager).Wait();
+            //IdentityDataInitializer.SeedData(userManager, roleManager).Wait();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ForumHub>("/forum");
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

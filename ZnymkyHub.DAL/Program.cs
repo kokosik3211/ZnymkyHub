@@ -27,10 +27,10 @@ namespace ZnymkyHub.DAL
                     .Resize(image.Width, image.Height));
 
                 medium.Mutate(x => x
-                    .Resize(image.Width / 2, image.Height / 2));
+                    .Resize(image.Width / 3, image.Height / 3));
 
                 small.Mutate(x => x
-                    .Resize(image.Width / 4, image.Height / 4));
+                    .Resize(image.Width / 5, image.Height / 5));
 
                 context.PhotoResolutions.Add(new Core.Domain.PhotoResolution
                 {
@@ -72,6 +72,7 @@ namespace ZnymkyHub.DAL
                     id++;
                 }
             }
+
             Console.WriteLine("Done.");
         }
     }
