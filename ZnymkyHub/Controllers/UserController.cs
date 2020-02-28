@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
@@ -66,7 +67,7 @@ namespace ZnymkyHub.Controllers
         [HttpPost]
         public async Task<IActionResult> PhotographersForMain()
         {
-            var users = _unitOfWork.Context.Photographers.Take(12).ToList();
+            var users = await _unitOfWork.Context.Photographers.Take(12).ToListAsync();
             List<SimpleUserDTO> userList = new List<SimpleUserDTO>();
             foreach(var elem in users)
             {
@@ -95,7 +96,7 @@ namespace ZnymkyHub.Controllers
         [HttpPost]
         public async Task<IActionResult> PhotographersCount()
         {
-            var count = _unitOfWork.Context.Photographers.Count();
+            var count = await _unitOfWork.Context.Photographers.CountAsync();
 
             return Ok(count);
         }

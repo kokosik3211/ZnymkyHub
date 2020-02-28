@@ -134,10 +134,7 @@ namespace ZnymkyHub
                 .AllowAnyHeader())*/);
 
             //services.AddAutoMapper();
-            services.AddSignalR(hubOptions =>
-            {
-                //hubOptions.HandshakeTimeout = TimeSpan.MaxValue;
-            });
+            services.AddSignalR();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -155,7 +152,13 @@ namespace ZnymkyHub
                 //app.UseHsts();
             }
 
-            /*app.UseExceptionHandler(
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:8088");
+                await next();
+            });
+
+            app.UseExceptionHandler(
                 builder =>
                 {
                     builder.Run(
@@ -171,20 +174,15 @@ namespace ZnymkyHub
                                 await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
                             }
                         });
-                });*/
+                });
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
-            app.UseHttpsRedirection();
-            //app.UseCors("AllowAll");
             app.UseCors(builder => builder.WithOrigins("http://localhost:8088")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());
-            //app.UseHttpsRedirection();
             app.UseAuthentication();
-            //app.UseCookiePolicy();
             //IdentityDataInitializer.SeedData(userManager, roleManager).Wait();
 
             app.UseSignalR(routes =>
