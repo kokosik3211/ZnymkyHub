@@ -129,9 +129,9 @@ namespace ZnymkyHub
             builder = new IdentityBuilder(builder.UserType, builder.RoleType, builder.Services);
             builder.AddEntityFrameworkStores<ZnymkyHubContext>().AddDefaultTokenProviders();
 
-            services.AddCors(/*options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.WithOrigins("http://localhost:8088")
                 .AllowAnyMethod()
-                .AllowAnyHeader())*/);
+                .AllowAnyHeader()));
 
             //services.AddAutoMapper();
             services.AddSignalR(hubOptions =>
@@ -177,11 +177,11 @@ namespace ZnymkyHub
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
-            //app.UseCors("AllowAll");
-            app.UseCors(builder => builder.WithOrigins("http://localhost:8088")
+            app.UseCors("AllowAll");
+            /*app.UseCors(builder => builder.WithOrigins("http://localhost:8088")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .AllowCredentials());
+                .AllowCredentials());*/
             //app.UseHttpsRedirection();
             app.UseAuthentication();
             //app.UseCookiePolicy();
