@@ -27,7 +27,7 @@ using ZnymkyHub.DAL.Core.Domain;
 using ZnymkyHub.DAL.Persistence;
 using ZnymkyHub.DAL.Core;
 using AutoMapper;
-using Microsoft.AspNetCore.Internal;
+//using Microsoft.AspNetCore.Internal;
 using ZnymkyHub.Hubs;
 
 namespace ZnymkyHub
@@ -135,7 +135,7 @@ namespace ZnymkyHub
 
             //services.AddAutoMapper();
             services.AddSignalR();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -152,12 +152,7 @@ namespace ZnymkyHub
                 //app.UseHsts();
             }
 
-            app.Use(async (context, next) =>
-            {
-                context.Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:8088");
-                await next();
-            });
-
+            app.UseRouting();
             app.UseExceptionHandler(
                 builder =>
                 {
@@ -183,18 +178,15 @@ namespace ZnymkyHub
                 .AllowAnyHeader()
                 .AllowCredentials());
             app.UseAuthentication();
+            app.UseAuthorization();
             //IdentityDataInitializer.SeedData(userManager, roleManager).Wait();
 
-            app.UseSignalR(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapHub<ForumHub>("/forum");
-            });
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
+                endpoints.MapHub<ForumHub>("/forum");
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
