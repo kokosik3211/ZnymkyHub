@@ -23,5 +23,6 @@
     <Folder Include="Auth\" />
     <Folder Include="Extensions\" />
     <Folder Include="Hubs\" />
+    <Folder Include="Models\Question\" />
   </ItemGroup>
 </Project>

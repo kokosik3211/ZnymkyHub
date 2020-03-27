@@ -29,6 +29,7 @@ using ZnymkyHub.DAL.Core;
 using AutoMapper;
 //using Microsoft.AspNetCore.Internal;
 using ZnymkyHub.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ZnymkyHub
 {
@@ -108,6 +109,19 @@ namespace ZnymkyHub
                 configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
                 configureOptions.SaveToken = true;
+
+                configureOptions.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = ctx =>
+                    {
+                        if (ctx.Request.Query.ContainsKey("access_token"))
+                        {
+                            ctx.Token = ctx.Request.Query["access_token"];
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             // api user claim policy
@@ -134,6 +148,7 @@ namespace ZnymkyHub
                 .AllowAnyHeader())*/);
 
             //services.AddAutoMapper();
+            services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
             services.AddSignalR();
             services.AddMvc();
         }
@@ -184,6 +199,8 @@ namespace ZnymkyHub
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<ForumHub>("/forum");
+                endpoints.MapHub<QuestionHub>("/question-hub");
+                endpoints.MapHub<QuestionHub>("/question-hub-jwt");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
