@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -6,12 +7,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.PixelFormats;
 using ZnymkyHub.DAL.Core;
 using ZnymkyHub.DAL.Core.Domain;
 
 namespace ZnymkyHub.Controllers
 {
-    [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]/[action]")]
     public class ProfileController : Controller
     {
@@ -25,6 +28,7 @@ namespace ZnymkyHub.Controllers
         }
 
         // GET api/profile/me
+        [Authorize(Policy = "ApiUser")]
         [HttpGet]
         public async Task<IActionResult> Me()
         {
@@ -42,6 +46,35 @@ namespace ZnymkyHub.Controllers
                 //customer.Locale,
                 customer.Gender,
                 customer.Email
+            });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserProfileInfo(int id)
+        {
+            var user = await _unitOfWork.Context.Users.SingleAsync(c => c.Id == id);
+
+            string base64 = null;
+            if (user.ProfilePhoto != null)
+            {
+                Image<Rgba32> image = Image.Load(user.ProfilePhoto);
+                base64 = image.ToBase64String(PngFormat.Instance);
+            }
+
+            var time = DateTime.Now - user.RegistrationDate;
+            string duration = time.Days.ToString();
+
+            return new OkObjectResult(new
+            {
+                user.Id,
+                user.FirstName,
+                user.LastName,
+                user.HomeTown,
+                user.Gender,
+                base64,
+                user.InstagramUrl,
+                duration,
+                user.PhoneNumber
             });
         }
     }
