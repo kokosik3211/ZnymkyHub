@@ -1,5 +1,4 @@
-﻿
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -41,7 +40,8 @@ namespace ZnymkyHub.Controllers
                 //customer.Identity.FacebookId,
                 customer.HomeTown,
                 //customer.Locale,
-                customer.Gender
+                customer.Gender,
+                customer.Email
             });
         }
     }

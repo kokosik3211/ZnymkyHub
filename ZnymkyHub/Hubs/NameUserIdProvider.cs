@@ -1,4 +1,6 @@
 ﻿
+using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ZnymkyHub.Hubs
@@ -7,7 +9,7 @@ namespace ZnymkyHub.Hubs
     {
         public string GetUserId(HubConnectionContext connection)
         {
-            return connection.User?.Identity?.Name;
+            return connection.User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         }
     }
 }

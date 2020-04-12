@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace ZnymkyHub.DAL.Core.Domain
 {
     public class FavouritePhotographer

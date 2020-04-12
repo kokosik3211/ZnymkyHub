@@ -15,7 +15,7 @@ namespace ZnymkyHub.DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -23,13 +23,17 @@ namespace ZnymkyHub.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -42,13 +46,17 @@ namespace ZnymkyHub.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -59,13 +67,17 @@ namespace ZnymkyHub.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderKey");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderDisplayName");
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -76,9 +88,11 @@ namespace ZnymkyHub.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.Property<int>("UserId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("RoleId");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -89,32 +103,69 @@ namespace ZnymkyHub.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.Property<int>("UserId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.AnswerDAO", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answers");
+                });
+
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Chat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateTime");
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("ReceiverId");
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("SenderId");
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -129,15 +180,20 @@ namespace ZnymkyHub.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateTime");
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("PhotoId");
+                    b.Property<int>("PhotoId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -150,12 +206,15 @@ namespace ZnymkyHub.DAL.Migrations
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.FavouritePhotographer", b =>
                 {
-                    b.Property<int>("UserId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("PhotographerId");
+                    b.Property<int>("PhotographerId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("UserId", "PhotographerId");
@@ -167,12 +226,15 @@ namespace ZnymkyHub.DAL.Migrations
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Like", b =>
                 {
-                    b.Property<int>("UserId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("PhotoId");
+                    b.Property<int>("PhotoId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("UserId", "PhotoId");
@@ -186,9 +248,11 @@ namespace ZnymkyHub.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -199,21 +263,29 @@ namespace ZnymkyHub.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateTime");
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NumberOfLikes");
+                    b.Property<int>("NumberOfLikes")
+                        .HasColumnType("int");
 
-                    b.Property<int>("NumberOfSaving");
+                    b.Property<int>("NumberOfSaving")
+                        .HasColumnType("int");
 
-                    b.Property<int>("PhotographerId");
+                    b.Property<int>("PhotographerId")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("PhotoshootId");
+                    b.Property<int?>("PhotoshootId")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("PhotoshootTypeId");
+                    b.Property<int?>("PhotoshootTypeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -226,38 +298,24 @@ namespace ZnymkyHub.DAL.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.PhotographerOutgoingCity", b =>
-                {
-                    b.Property<int>("PhotographerId");
-
-                    b.Property<int>("OutgoingCityId");
-
-                    b.Property<int>("AdditionalPayment");
-
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.HasKey("PhotographerId", "OutgoingCityId");
-
-                    b.HasIndex("OutgoingCityId");
-
-                    b.ToTable("PhotographerOutgoingCities");
-                });
-
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.PhotoResolution", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<byte[]>("Medium");
+                    b.Property<byte[]>("Medium")
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<byte[]>("Original");
+                    b.Property<byte[]>("Original")
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<int>("PhotoId");
+                    b.Property<int>("PhotoId")
+                        .HasColumnType("int");
 
-                    b.Property<byte[]>("Small");
+                    b.Property<byte[]>("Small")
+                        .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
 
@@ -267,19 +325,47 @@ namespace ZnymkyHub.DAL.Migrations
                     b.ToTable("PhotoResolutions");
                 });
 
+            modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.PhotographerOutgoingCity", b =>
+                {
+                    b.Property<int>("PhotographerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OutgoingCityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AdditionalPayment")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("PhotographerId", "OutgoingCityId");
+
+                    b.HasIndex("OutgoingCityId");
+
+                    b.ToTable("PhotographerOutgoingCities");
+                });
+
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Photoshoot", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhotographerId");
+                    b.Property<int>("PhotographerId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("PhotoshootTypeId");
+                    b.Property<int>("PhotoshootTypeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -294,28 +380,60 @@ namespace ZnymkyHub.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("PhotoshootTypes");
                 });
 
+            modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.QuestionDAO", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Questions");
+                });
+
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
@@ -330,12 +448,15 @@ namespace ZnymkyHub.DAL.Migrations
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Saving", b =>
                 {
-                    b.Property<int>("UserId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("PhotoId");
+                    b.Property<int>("PhotoId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("UserId", "PhotoId");
@@ -349,63 +470,89 @@ namespace ZnymkyHub.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccessFailedCount");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Discriminator")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<bool>("EmailConfirmed");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("FacebookUrl");
+                    b.Property<string>("FacebookUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HomeTown");
+                    b.Property<string>("HomeTown")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("InstagramUrl");
+                    b.Property<string>("InstagramUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("LockoutEnabled");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<string>("PasswordHash");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("PhoneNumberConfirmed");
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
 
-                    b.Property<byte[]>("ProfilePhoto");
+                    b.Property<byte[]>("ProfilePhoto")
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("ProfilePhotoName");
+                    b.Property<string>("ProfilePhotoName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RegistrationDate");
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("RoleId");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("SecurityStamp");
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TwoFactorEnabled");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
@@ -427,15 +574,19 @@ namespace ZnymkyHub.DAL.Migrations
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.UserPhotoshootType", b =>
                 {
-                    b.Property<int>("PhotographerId");
+                    b.Property<int>("PhotographerId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("PhotoshootTypeId");
+                    b.Property<int>("PhotoshootTypeId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Price");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.HasKey("PhotographerId", "PhotoshootTypeId");
 
@@ -448,9 +599,6 @@ namespace ZnymkyHub.DAL.Migrations
                 {
                     b.HasBaseType("ZnymkyHub.DAL.Core.Domain.User");
 
-
-                    b.ToTable("AuthorizedUser");
-
                     b.HasDiscriminator().HasValue("AuthorizedUser");
                 });
 
@@ -458,56 +606,69 @@ namespace ZnymkyHub.DAL.Migrations
                 {
                     b.HasBaseType("ZnymkyHub.DAL.Core.Domain.User");
 
-                    b.Property<int>("NumberOfPhotos");
-
-                    b.ToTable("Photographer");
+                    b.Property<int>("NumberOfPhotos")
+                        .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("Photographer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("ZnymkyHub.DAL.Core.Domain.Role")
+                    b.HasOne("ZnymkyHub.DAL.Core.Domain.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("ZnymkyHub.DAL.Core.Domain.User")
+                    b.HasOne("ZnymkyHub.DAL.Core.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("ZnymkyHub.DAL.Core.Domain.User")
+                    b.HasOne("ZnymkyHub.DAL.Core.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("ZnymkyHub.DAL.Core.Domain.Role")
+                    b.HasOne("ZnymkyHub.DAL.Core.Domain.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("ZnymkyHub.DAL.Core.Domain.User")
+                    b.HasOne("ZnymkyHub.DAL.Core.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("ZnymkyHub.DAL.Core.Domain.User")
+                    b.HasOne("ZnymkyHub.DAL.Core.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.AnswerDAO", b =>
+                {
+                    b.HasOne("ZnymkyHub.DAL.Core.Domain.QuestionDAO", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Chat", b =>
@@ -515,12 +676,14 @@ namespace ZnymkyHub.DAL.Migrations
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.User", "Receiver")
                         .WithMany("ChatReceiver")
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.User", "Sender")
                         .WithMany("ChatSender")
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Comment", b =>
@@ -528,12 +691,14 @@ namespace ZnymkyHub.DAL.Migrations
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.Photo", "Photo")
                         .WithMany("Comments")
                         .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.FavouritePhotographer", b =>
@@ -541,12 +706,14 @@ namespace ZnymkyHub.DAL.Migrations
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.Photographer", "Photographer")
                         .WithMany("FavouritePhotographerUsers")
                         .HasForeignKey("PhotographerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.User", "User")
                         .WithMany("FavouritePhotographerPhotographers")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Like", b =>
@@ -554,12 +721,14 @@ namespace ZnymkyHub.DAL.Migrations
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.Photo", "Photo")
                         .WithMany("Likes")
                         .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.User", "User")
                         .WithMany("Likes")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Photo", b =>
@@ -567,7 +736,8 @@ namespace ZnymkyHub.DAL.Migrations
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.Photographer", "Photographer")
                         .WithMany("Photos")
                         .HasForeignKey("PhotographerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.Photoshoot", "Photoshoot")
                         .WithMany("Photos")
@@ -580,25 +750,28 @@ namespace ZnymkyHub.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.PhotographerOutgoingCity", b =>
-                {
-                    b.HasOne("ZnymkyHub.DAL.Core.Domain.OutgoingCity", "OutgoingCity")
-                        .WithMany("PhotographerOutgoingCities")
-                        .HasForeignKey("OutgoingCityId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("ZnymkyHub.DAL.Core.Domain.Photographer", "Photographer")
-                        .WithMany("PhotographerOutgoingCities")
-                        .HasForeignKey("PhotographerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.PhotoResolution", b =>
                 {
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.Photo", "Photo")
                         .WithOne("PhotoResolution")
                         .HasForeignKey("ZnymkyHub.DAL.Core.Domain.PhotoResolution", "PhotoId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.PhotographerOutgoingCity", b =>
+                {
+                    b.HasOne("ZnymkyHub.DAL.Core.Domain.OutgoingCity", "OutgoingCity")
+                        .WithMany("PhotographerOutgoingCities")
+                        .HasForeignKey("OutgoingCityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ZnymkyHub.DAL.Core.Domain.Photographer", "Photographer")
+                        .WithMany("PhotographerOutgoingCities")
+                        .HasForeignKey("PhotographerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Photoshoot", b =>
@@ -606,12 +779,14 @@ namespace ZnymkyHub.DAL.Migrations
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.Photographer", "Photographer")
                         .WithMany("Photoshoots")
                         .HasForeignKey("PhotographerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.PhotoshootType", "PhotoshootType")
                         .WithMany("Photoshoots")
                         .HasForeignKey("PhotoshootTypeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.Saving", b =>
@@ -619,12 +794,14 @@ namespace ZnymkyHub.DAL.Migrations
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.Photo", "Photo")
                         .WithMany("Savings")
                         .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.User", "User")
                         .WithMany("Savings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.User", b =>
@@ -632,7 +809,8 @@ namespace ZnymkyHub.DAL.Migrations
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZnymkyHub.DAL.Core.Domain.UserPhotoshootType", b =>
@@ -640,12 +818,14 @@ namespace ZnymkyHub.DAL.Migrations
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.Photographer", "Photographer")
                         .WithMany("UserPhotoshootTypes")
                         .HasForeignKey("PhotographerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("ZnymkyHub.DAL.Core.Domain.PhotoshootType", "PhotoshootType")
                         .WithMany("UserPhotoshootTypes")
                         .HasForeignKey("PhotoshootTypeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

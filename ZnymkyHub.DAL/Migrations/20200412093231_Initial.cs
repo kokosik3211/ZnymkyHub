@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ZnymkyHub.DAL.Migrations
@@ -13,7 +12,7 @@ namespace ZnymkyHub.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
@@ -28,7 +27,7 @@ namespace ZnymkyHub.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -41,7 +40,7 @@ namespace ZnymkyHub.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -54,7 +53,7 @@ namespace ZnymkyHub.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -75,7 +74,7 @@ namespace ZnymkyHub.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -119,7 +118,7 @@ namespace ZnymkyHub.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -204,7 +203,7 @@ namespace ZnymkyHub.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     SenderId = table.Column<int>(nullable: false),
                     ReceiverId = table.Column<int>(nullable: false),
                     DateTime = table.Column<DateTime>(nullable: false),
@@ -231,10 +230,10 @@ namespace ZnymkyHub.DAL.Migrations
                 name: "FavouritePhotographers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     PhotographerId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
@@ -257,10 +256,10 @@ namespace ZnymkyHub.DAL.Migrations
                 name: "PhotographerOutgoingCities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     PhotographerId = table.Column<int>(nullable: false),
                     OutgoingCityId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AdditionalPayment = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -285,7 +284,7 @@ namespace ZnymkyHub.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     PhotographerId = table.Column<int>(nullable: false),
                     PhotoshootTypeId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
@@ -312,10 +311,10 @@ namespace ZnymkyHub.DAL.Migrations
                 name: "UserPhotoshootTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     PhotographerId = table.Column<int>(nullable: false),
                     PhotoshootTypeId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Price = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -340,10 +339,11 @@ namespace ZnymkyHub.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     PhotographerId = table.Column<int>(nullable: false),
                     PhotoshootId = table.Column<int>(nullable: true),
+                    PhotoshootTypeId = table.Column<int>(nullable: true),
                     DateTime = table.Column<DateTime>(nullable: false),
                     NumberOfLikes = table.Column<int>(nullable: false),
                     NumberOfSaving = table.Column<int>(nullable: false)
@@ -363,6 +363,12 @@ namespace ZnymkyHub.DAL.Migrations
                         principalTable: "Photoshoots",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Photos_PhotoshootTypes_PhotoshootTypeId",
+                        column: x => x.PhotoshootTypeId,
+                        principalTable: "PhotoshootTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -370,7 +376,7 @@ namespace ZnymkyHub.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     PhotoId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     DateTime = table.Column<DateTime>(nullable: false),
@@ -397,10 +403,10 @@ namespace ZnymkyHub.DAL.Migrations
                 name: "Likes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     PhotoId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
@@ -424,7 +430,7 @@ namespace ZnymkyHub.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Original = table.Column<byte[]>(nullable: true),
                     Medium = table.Column<byte[]>(nullable: true),
                     Small = table.Column<byte[]>(nullable: true),
@@ -445,10 +451,10 @@ namespace ZnymkyHub.DAL.Migrations
                 name: "Savings",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     PhotoId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
@@ -561,6 +567,11 @@ namespace ZnymkyHub.DAL.Migrations
                 name: "IX_Photos_PhotoshootId",
                 table: "Photos",
                 column: "PhotoshootId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_PhotoshootTypeId",
+                table: "Photos",
+                column: "PhotoshootTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photoshoots_PhotographerId",

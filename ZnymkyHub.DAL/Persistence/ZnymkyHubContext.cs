@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using ZnymkyHub.DAL.Core.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using ZnymkyHub.DAL.Persistence.EntityConfigurations;
@@ -27,6 +28,8 @@ namespace ZnymkyHub.DAL.Persistence
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<FavouritePhotographer> FavouritePhotographers { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
+        public virtual DbSet<QuestionDAO> Questions { get; set; }
+        public virtual DbSet<AnswerDAO> Answers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -60,6 +63,8 @@ namespace ZnymkyHub.DAL.Persistence
             builder.ApplyConfiguration(new CommentConfiguration());
             builder.ApplyConfiguration(new FavouritePhotographerConfiguration());
             builder.ApplyConfiguration(new ChatConfiguration());
+            builder.ApplyConfiguration(new QuestionConfigurations());
+            builder.ApplyConfiguration(new AnswerConfigurations());
         }
     }
 }

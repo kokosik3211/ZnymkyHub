@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Configuration;
 using System.Net;
 using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using FluentValidation.AspNetCore;
 using ZnymkyHub.Auth;
 using ZnymkyHub.Extensions;
 using ZnymkyHub.Helpers;
@@ -15,9 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +21,6 @@ using ZnymkyHub.DAL.Core.Domain;
 using ZnymkyHub.DAL.Persistence;
 using ZnymkyHub.DAL.Core;
 using AutoMapper;
-//using Microsoft.AspNetCore.Internal;
 using ZnymkyHub.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
@@ -147,7 +140,7 @@ namespace ZnymkyHub
                 .AllowAnyMethod()
                 .AllowAnyHeader())*/);
 
-            //services.AddAutoMapper();
+            services.AddAutoMapper(typeof(Startup));
             services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
             services.AddSignalR();
             services.AddMvc();

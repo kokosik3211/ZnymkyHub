@@ -10,6 +10,7 @@ using SixLabors.ImageSharp.Processing;
 using SixLabors.Primitives;
 using SixLabors.Shapes;
 using SixLabors.ImageSharp.Formats.Png;
+using Microsoft.EntityFrameworkCore;
 
 namespace ZnymkyHub.DAL
 {
@@ -56,14 +57,15 @@ namespace ZnymkyHub.DAL
         static void Main(string[] args)
         {
             Console.WriteLine("Waiting...");
-
-            string kek = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).ToString()).ToString()).ToString();
-
-            string folder = System.IO.Path.Combine(kek, "InitialPhotos");
+            string dalProjectPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).ToString()).ToString()).ToString();
+            string folder = System.IO.Path.Combine(dalProjectPath, "InitialPhotos");
+            string sqlSeedDataScript = System.IO.Path.Combine(folder, "SeedData.sql");
+            string sql = File.ReadAllText(sqlSeedDataScript);
             List<string> list = Directory.GetFiles(folder, "*.jpg").ToList();
 
             using(ZnymkyHubContext context = new ZnymkyHubContext())
             {
+                context.Database.ExecuteSqlRaw(sql);
                 int id = 1;
 
                 foreach(var elem in list)

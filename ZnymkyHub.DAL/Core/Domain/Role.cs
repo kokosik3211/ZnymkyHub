@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
 // роль - адмін, фотограф чи користувач
