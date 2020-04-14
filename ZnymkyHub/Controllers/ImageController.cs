@@ -17,6 +17,7 @@ using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using ZnymkyHub.DAL.Core.Domain;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -118,9 +119,14 @@ namespace ZnymkyHub.Controllers
 
         [HttpPost]
         [Route("{id}/{current}")]
-        public IActionResult GetPhotosForPhotoArea([FromRoute]int id, [FromRoute]int current)
+        public async Task<IActionResult> GetPhotosForPhotoArea([FromRoute]int id, [FromRoute]int current)
         {
-            var photographer = _unitOfWork.Photographers.Get(id);
+            var photographer = await _unitOfWork.Context.Photographers.FirstOrDefaultAsync(p => p.Id == id);
+            if(photographer == null)
+            {
+                return NotFound();
+            }
+
             var photos = photographer.Photos.Reverse().Skip((current - 1) * 15).Take(15);
 
             var originals = new List<SimplePhotoDTO>();
@@ -143,10 +149,40 @@ namespace ZnymkyHub.Controllers
 
         [HttpPost]
         [Route("{id}")]
-        public IActionResult GetInfoForPhotoPaginator([FromRoute]int id)
+        public async Task<IActionResult> GetInfoForPhotoPaginator([FromRoute]int id)
         {
-            int count = _unitOfWork.Context.Photos.Count(p => p.PhotographerId == id);
+            int count = await _unitOfWork.Context.Photos.CountAsync(p => p.PhotographerId == id);
             return Ok(count);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPhoto(int photoId)
+        {
+            var photo = await _unitOfWork.Context.Photos.FirstOrDefaultAsync(p => p.Id == photoId);
+            if(photo == null)
+            {
+                return NotFound();
+            }
+
+            var originalPhoto = await _unitOfWork
+                .Context
+                .PhotoResolutions
+                .Where(p => p.Id == photoId)
+                .Select(p => p.Original)
+                .FirstOrDefaultAsync();
+            var photoR = Image.Load(originalPhoto);
+            var photoViewModel = new SimplePhotoDTO
+            {
+                id = photo.Id,
+                name = photo.Name,
+                numlikes = photo.NumberOfLikes,
+                numsaves = photo.NumberOfSaving,
+                phtype = photo.PhotoshootType?.Name,
+                base64 = photoR.ToBase64String(PngFormat.Instance),
+                date = photo.DateTime.ToString("hh:mm tt - dd MMMM yyyy")
+            };
+
+            return new OkObjectResult(photoViewModel);
         }
 
         private Image<Rgba32> MakeImgSquare(Image<Rgba32> img)

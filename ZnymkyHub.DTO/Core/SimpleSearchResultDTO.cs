@@ -12,6 +12,7 @@ namespace ZnymkyHub.DTO.Core
         public int price { get; set; }
         public string fullName { get; set; }
         public string base64 { get; set; }
+        public string instagramUrl { get; set; }
         public List<SimplePhotoDTO> photos { get; set; }
     }
 }

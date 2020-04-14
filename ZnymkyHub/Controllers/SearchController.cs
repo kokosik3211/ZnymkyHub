@@ -55,6 +55,7 @@ namespace ZnymkyHub.Controllers
                     price = pric,
                     fullName = $"{elem.FirstName} {elem.LastName}",
                     base64 = base64,
+                    instagramUrl = elem.InstagramUrl,
                     photos = MapToSimplePhoto(photos)
                 });
             }

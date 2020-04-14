@@ -45,7 +45,8 @@ namespace ZnymkyHub.Controllers
                 customer.HomeTown,
                 //customer.Locale,
                 customer.Gender,
-                customer.Email
+                customer.Email,
+                customer.RoleId
             });
         }
 
