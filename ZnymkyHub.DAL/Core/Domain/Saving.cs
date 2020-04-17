@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace ZnymkyHub.DAL.Core.Domain
 {
     public class Saving
@@ -10,5 +11,7 @@ namespace ZnymkyHub.DAL.Core.Domain
 
         public int UserId { get; set; }
         public virtual User User { get; set; }
+
+        public DateTime Date { get; set; }
     }
 }

@@ -24,6 +24,8 @@ namespace ZnymkyHub.DAL.Persistence.EntityConfigurations
                 .WithMany(photo => photo.Likes)
                 .HasForeignKey(like => like.PhotoId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(p => p.Date).IsRequired();
         }
     }
 }

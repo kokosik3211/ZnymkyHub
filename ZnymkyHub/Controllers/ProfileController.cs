@@ -38,6 +38,7 @@ namespace ZnymkyHub.Controllers
 
             return new OkObjectResult(new
             {
+                customer.Id,
                 customer.FirstName,
                 customer.LastName,
                 //customer.Identity.PictureUrl,
@@ -54,6 +55,16 @@ namespace ZnymkyHub.Controllers
         public async Task<IActionResult> GetUserProfileInfo(int id)
         {
             var user = await _unitOfWork.Context.Users.SingleAsync(c => c.Id == id);
+
+            var userId = _caller.Claims.FirstOrDefault(c => c.Type == "id");
+            var activity = new ProfileActivityDAO
+            {
+                ProfileId = id,
+                VisitorId = userId != null ? Convert.ToInt32(userId.Value): default(int?),
+                Date = DateTime.Now
+            };
+            await _unitOfWork.Context.ProfileActivities.AddAsync(activity);
+            await _unitOfWork.CommitAsync();
 
             string base64 = null;
             if (user.ProfilePhoto != null)

@@ -1,4 +1,7 @@
 ﻿
+using System;
+using ZnymkyHub.DAL.Core.Domain;
+
 namespace ZnymkyHub.ViewModels
 {
     public class RegistrationViewModel
@@ -8,6 +11,8 @@ namespace ZnymkyHub.ViewModels
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public DateTime Birthday { get; set; }
+        public Gender Gender { get; set; }
         public string HomeTown { get; set; }
         public int RoleId { get; set; }
         public bool EmailConfirmed { get; set; } = true;

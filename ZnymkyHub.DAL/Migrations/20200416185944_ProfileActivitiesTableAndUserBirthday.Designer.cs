@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZnymkyHub.DAL.Persistence;
 
 namespace ZnymkyHub.DAL.Migrations
 {
     [DbContext(typeof(ZnymkyHubContext))]
-    partial class ZnymkyHubContextModelSnapshot : ModelSnapshot
+    [Migration("20200416185944_ProfileActivitiesTableAndUserBirthday")]
+    partial class ProfileActivitiesTableAndUserBirthday
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,9 +233,6 @@ namespace ZnymkyHub.DAL.Migrations
 
                     b.Property<int>("PhotoId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -477,9 +476,6 @@ namespace ZnymkyHub.DAL.Migrations
 
                     b.Property<int>("PhotoId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

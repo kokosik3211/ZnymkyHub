@@ -30,6 +30,7 @@ namespace ZnymkyHub.DAL.Persistence
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<QuestionDAO> Questions { get; set; }
         public virtual DbSet<AnswerDAO> Answers { get; set; }
+        public virtual DbSet<ProfileActivityDAO> ProfileActivities { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

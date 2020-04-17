@@ -6,7 +6,7 @@ namespace ZnymkyHub.DAL.Core.Domain
 {
     public enum Gender : byte
     {
-        Male, Female, Other
+        Male, Female
     }
 
     public class User : IdentityUser<int>
@@ -27,6 +27,7 @@ namespace ZnymkyHub.DAL.Core.Domain
         public string ProfilePhotoName { get; set; }
 
         public DateTime RegistrationDate { get; set; }
+        public DateTime Birthday { get; set; }
 
         public string FacebookUrl { get; set; }
         public string InstagramUrl { get; set; }

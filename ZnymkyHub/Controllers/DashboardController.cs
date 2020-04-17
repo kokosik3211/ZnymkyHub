@@ -61,7 +61,8 @@ namespace ZnymkyHub.Controllers
                 base64,
                 customer.InstagramUrl,
                 duration,
-                customer.PhoneNumber
+                customer.PhoneNumber,
+                customer.RoleId
             });
         }
     }

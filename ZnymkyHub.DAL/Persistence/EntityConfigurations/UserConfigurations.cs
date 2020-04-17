@@ -26,6 +26,9 @@ namespace ZnymkyHub.DAL.Persistence.EntityConfigurations
 
             builder.Property(user => user.Gender)
                 .HasConversion(genderConverter);
+
+            
+            builder.Property(user => user.Birthday).HasDefaultValue(new DateTime(2000, 1, 1)).IsRequired();
         }
     }
 }

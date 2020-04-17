@@ -18,12 +18,14 @@ namespace ZnymkyHub.Controllers
     public class AccountsController : BaseController
     {
         private readonly UserManager<User> _userManager;
-        //private readonly IMapper _mapper;
+        private readonly IMapper _mapper;
 
-        public AccountsController(UserManager<User> userManager, /*IMapper mapper,*/ IUnitOfWork unitOfWork) : base(unitOfWork)
+        public AccountsController(UserManager<User> userManager,
+            IMapper mapper,
+            IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _userManager = userManager;
-            //_mapper = mapper;
+            _mapper = mapper;
         }
 
         // POST api/accounts
@@ -35,26 +37,33 @@ namespace ZnymkyHub.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userIdentity = //_mapper.Map<User>(model);
-                new User
+            User userIdentity;
+            if (model.RoleId == 2) {
+                userIdentity = _mapper.Map<Photographer>(model);
+            } else {
+                userIdentity = _mapper.Map<AuthorizedUser>(model);
+            }
+                /*new User
                 {
                     UserName = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
                     HomeTown = model.HomeTown,
-                    RoleId = 3,
+                    RoleId = model.RoleId,
                     InstagramUrl = model.InstagramUrl,
                     EmailConfirmed = model.EmailConfirmed,
-                    RegistrationDate = DateTime.Now
-                };
+                    RegistrationDate = DateTime.Now,
+                    Birthday = model.Birthday,
+                    Gender = model.Gender
+                };*/
 
-            var result = await _userManager.CreateAsync(userIdentity, model.Password);
+            IdentityResult result = await _userManager.CreateAsync(userIdentity, model.Password);
 
             if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            var add_role = await _userManager.AddToRoleAsync(user, user.Role.Name);
+            //var user = await _userManager.FindByEmailAsync(model.Email);
+            //var add_role = await _userManager.AddToRoleAsync(user, user.Role.Name);
 
             //await _unitOfWork.Users.AddAsync(new Customer { IdentityId = userIdentity.Id, Location = model.Location });
             //await _unitOfWork.CommitAsync();
