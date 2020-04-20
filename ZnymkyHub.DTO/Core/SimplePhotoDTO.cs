@@ -10,5 +10,9 @@ namespace ZnymkyHub.DTO.Core
         public string name { get; set; }
         public string phtype { get; set; }
         public string date { get; set; }
+        public bool liked { get; set; }
+        public bool saved { get; set; }
+        public string phName { get; set; }
+        public string phInstagram { get; set; }
     }
 }

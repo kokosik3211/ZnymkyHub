@@ -8,8 +8,14 @@ using ZnymkyHub.Models;
 
 namespace ZnymkyHub.Controllers
 {
+    [Route("api/[controller]/[action]")]
     public class HomeController : Controller
     {
+        public IActionResult TestApp()
+        {
+            return Ok("hello!");
+        }
+
         public IActionResult Index()
         {
             return View();

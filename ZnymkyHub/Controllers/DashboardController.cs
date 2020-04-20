@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using ZnymkyHub.DAL.Core;
 using ZnymkyHub.DAL.Core.Domain;
+using ZnymkyHub.DTO.Core;
 
 namespace ZnymkyHub.Controllers
 {
@@ -64,6 +66,58 @@ namespace ZnymkyHub.Controllers
                 customer.PhoneNumber,
                 customer.RoleId
             });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetFavouritePhotographers()
+        {
+            var userId = _caller.Claims.FirstOrDefault(c => c.Type == "id");
+            if(userId == null)
+            {
+                return BadRequest();
+            }
+
+            var id = Convert.ToInt32(userId.Value);
+
+            var photographers = await (from f in _unitOfWork.Context.FavouritePhotographers
+                                 join p in _unitOfWork.Context.Photographers
+                                 on f.PhotographerId equals p.Id
+                                 where f.UserId == id
+                                 select new
+                                 {
+                                     id = p.Id,
+                                     userName = p.UserName,
+                                     email = p.Email,
+                                     firstName = p.FirstName,
+                                     lastName = p.LastName,
+                                     homeTown = p.HomeTown,
+                                     roleId = p.RoleId,
+                                     base64 = p.ProfilePhoto
+                                 }).ToListAsync();
+
+            List<SimpleUserDTO> userList = new List<SimpleUserDTO>();
+            foreach (var elem in photographers)
+            {
+                string base64 = null;
+                if (elem.base64 != null)
+                {
+                    Image<Rgba32> image = Image.Load(elem.base64);
+                    base64 = image.ToBase64String(PngFormat.Instance);
+                }
+                userList.Add(new SimpleUserDTO
+                {
+                    id = elem.id,
+                    userName = elem.userName,
+                    email = elem.email,
+                    firstName = elem.firstName,
+                    lastName = elem.lastName,
+                    homeTown = elem.homeTown,
+                    roleId = elem.roleId,
+                    photo = base64,
+                    fullName = $"{elem.firstName} {elem.lastName}"
+                });
+            }
+            return Ok(userList);
         }
     }
 }

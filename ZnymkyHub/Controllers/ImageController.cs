@@ -155,6 +155,59 @@ namespace ZnymkyHub.Controllers
             return Ok(count);
         }
 
+        [HttpPost]
+        [Route("{id}/{current}")]
+        public async Task<IActionResult> GetSavedPhotos([FromRoute]int id, [FromRoute]int current)
+        {
+            var user = await _unitOfWork.Context.Users.FirstOrDefaultAsync(p => p.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var savings = user.Savings.Reverse().Skip((current - 1) * 15).Take(15);
+            var photoIds = savings.Select(s => s.PhotoId).ToList();
+
+            var photos = await (from p in _unitOfWork.Context.Photos
+                                join r in _unitOfWork.Context.PhotoResolutions
+                                on p.Id equals r.PhotoId
+                                where photoIds.Contains(p.Id)
+                                select new
+                                {
+                                    id = p.Id,
+                                    name = p.Name,
+                                    photoBytes = r.Small,
+                                    numlikes = p.NumberOfLikes,
+                                    numsaves = p.NumberOfSaving
+                                }).ToListAsync();
+
+            var photosViewModel = new List<SimplePhotoDTO>();
+            Image<Rgba32> photo;
+            foreach (var elem in photos)
+            {
+                photo = Image.Load(elem.photoBytes);
+                photosViewModel.Add(new SimplePhotoDTO
+                {
+                    id = elem.id,
+                    name = elem.name,
+                    base64 = photo.ToBase64String(PngFormat.Instance),
+                    numlikes = elem.numlikes,
+                    numsaves = elem.numsaves,
+                    phtype = null
+                });
+            }
+
+            return new OkObjectResult(photosViewModel);
+        }
+
+        [HttpPost]
+        [Route("{id}")]
+        public async Task<IActionResult> GetSavedPhotosPaginatorInfo([FromRoute]int id)
+        {
+            int count = await _unitOfWork.Context.Savings.CountAsync(p => p.UserId == id);
+            return Ok(count);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetPhoto(int photoId)
         {
@@ -164,6 +217,8 @@ namespace ZnymkyHub.Controllers
                 return NotFound();
             }
 
+            var photographer = photo.Photographer;
+
             var originalPhoto = await _unitOfWork
                 .Context
                 .PhotoResolutions
@@ -171,6 +226,17 @@ namespace ZnymkyHub.Controllers
                 .Select(p => p.Original)
                 .FirstOrDefaultAsync();
             var photoR = Image.Load(originalPhoto);
+
+            var userId = _caller.Claims.FirstOrDefault(c => c.Type == "id");
+            var liked = false;
+            var saved = false;
+            if(userId != null)
+            {
+                var id = Convert.ToInt32(userId.Value);
+                liked = await _unitOfWork.Context.Likes.AnyAsync(l => l.UserId == id && l.PhotoId == photoId);
+                saved = await _unitOfWork.Context.Savings.AnyAsync(l => l.UserId == id && l.PhotoId == photoId);
+            }
+
             var photoViewModel = new SimplePhotoDTO
             {
                 id = photo.Id,
@@ -179,10 +245,116 @@ namespace ZnymkyHub.Controllers
                 numsaves = photo.NumberOfSaving,
                 phtype = photo.PhotoshootType?.Name,
                 base64 = photoR.ToBase64String(PngFormat.Instance),
-                date = photo.DateTime.ToString("hh:mm tt - dd MMMM yyyy")
+                date = photo.DateTime.ToString("hh:mm tt - dd MMMM yyyy"),
+                liked = liked,
+                saved = saved,
+                phName = $"{photographer.FirstName} {photographer.LastName}",
+                phInstagram = photographer.InstagramUrl
             };
 
             return new OkObjectResult(photoViewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> LikePhoto(int photoId)
+        {
+            var userId = _caller.Claims.FirstOrDefault(c => c.Type == "id");
+            var id = Convert.ToInt32(userId.Value);
+
+            var photo = await _unitOfWork.Context.Photos.FirstOrDefaultAsync(p => p.Id == photoId);
+            if (photo == null)
+            {
+                return BadRequest();
+            }
+
+            var like = new Like
+            {
+                PhotoId = photoId,
+                UserId = id,
+                Date = DateTime.Now
+            };
+
+            await _unitOfWork.Context.Likes.AddAsync(like);
+            photo.NumberOfLikes++;
+            await _unitOfWork.CommitAsync();
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UnlikePhoto(int photoId)
+        {
+            var userId = _caller.Claims.FirstOrDefault(c => c.Type == "id");
+            var id = Convert.ToInt32(userId.Value);
+
+            var photo = await _unitOfWork.Context.Photos.FirstOrDefaultAsync(p => p.Id == photoId);
+            if (photo == null)
+            {
+                return BadRequest();
+            }
+
+            var like = await _unitOfWork.Context.Likes.FirstOrDefaultAsync(l => l.UserId == id && l.PhotoId == photoId);
+            if(like != null)
+            {
+                _unitOfWork.Context.Likes.Remove(like);
+                photo.NumberOfLikes--;
+                await _unitOfWork.CommitAsync();
+            }
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> SavePhoto(int photoId)
+        {
+            var userId = _caller.Claims.FirstOrDefault(c => c.Type == "id");
+            var id = Convert.ToInt32(userId.Value);
+
+            var photo = await _unitOfWork.Context.Photos.FirstOrDefaultAsync(p => p.Id == photoId);
+            if (photo == null)
+            {
+                return BadRequest();
+            }
+
+            var save = new Saving
+            {
+                PhotoId = photoId,
+                UserId = id,
+                Date = DateTime.Now
+            };
+
+            await _unitOfWork.Context.Savings.AddAsync(save);
+            photo.NumberOfSaving++;
+            await _unitOfWork.CommitAsync();
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UnsavePhoto(int photoId)
+        {
+            var userId = _caller.Claims.FirstOrDefault(c => c.Type == "id");
+            var id = Convert.ToInt32(userId.Value);
+
+            var photo = await _unitOfWork.Context.Photos.FirstOrDefaultAsync(p => p.Id == photoId);
+            if (photo == null)
+            {
+                return BadRequest();
+            }
+
+            var save = await _unitOfWork.Context.Savings.FirstOrDefaultAsync(l => l.UserId == id && l.PhotoId == photoId);
+            if (save != null)
+            {
+                _unitOfWork.Context.Savings.Remove(save);
+                photo.NumberOfSaving--;
+                await _unitOfWork.CommitAsync();
+            }
+
+            return Ok();
         }
 
         private Image<Rgba32> MakeImgSquare(Image<Rgba32> img)

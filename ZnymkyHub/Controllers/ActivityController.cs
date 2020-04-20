@@ -74,12 +74,17 @@ namespace ZnymkyHub.Controllers
             var id = Convert.ToInt32(userId.Value);
 
             var dateToCompare = DateTime.Now.Date.AddDays(-6);
-            var likes = await _unitOfWork.Context.Likes
-                .Where(l => l.UserId == id && l.Date >= dateToCompare)
-                .ToListAsync();
-            var savings = await _unitOfWork.Context.Savings
-                .Where(s => s.UserId == id && s.Date >= dateToCompare)
-                .ToListAsync();
+            var likes = await (from l in _unitOfWork.Context.Likes
+                                join p in _unitOfWork.Context.Photos
+                                on l.PhotoId equals p.Id
+                                where l.Date >= dateToCompare && p.PhotographerId == id
+                                select l).ToListAsync();
+
+            var savings = await (from l in _unitOfWork.Context.Savings
+                               join p in _unitOfWork.Context.Photos
+                               on l.PhotoId equals p.Id
+                               where l.Date >= dateToCompare && p.PhotographerId == id
+                               select l).ToListAsync();
 
             var groupedLikes = (from l in likes
                                    group l by l.Date.ToString("dddd") into g
@@ -87,6 +92,7 @@ namespace ZnymkyHub.Controllers
             var groupedSavings = (from s in savings
                                 group s by s.Date.ToString("dddd") into g
                                 select new { day = g.Key, count = g.ToList().Count }).ToDictionary(d => d.day, d => d.count);
+
             var week = GetPreviousSevenDays();
             var weekData = week.Select(d => new
             {
@@ -171,7 +177,7 @@ namespace ZnymkyHub.Controllers
                 .Select(a => (int)a.VisitorId)
                 .ToListAsync();
 
-            var visitorsCount = visitorsIds.Count;
+            var visitorsCount = visitorsIds.Distinct().Count();
 
             var ageData = await (from u in _unitOfWork.Context.Users
                                     where visitorsIds.Contains(u.Id)
@@ -240,7 +246,7 @@ namespace ZnymkyHub.Controllers
                 .Select(a => (int)a.VisitorId)
                 .ToListAsync();
 
-            var visitorsCount = visitorsIds.Count;
+            var visitorsCount = visitorsIds.Distinct().Count();
 
             var cities = await _unitOfWork.Context.Users
                 .Where(u => visitorsIds.Contains(u.Id))

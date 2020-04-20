@@ -76,6 +76,13 @@ namespace ZnymkyHub.Controllers
             var time = DateTime.Now - user.RegistrationDate;
             string duration = time.Days.ToString();
 
+            var isFavourite = false;
+            if (userId != null)
+            {
+                var userIdInt = Convert.ToInt32(userId.Value);
+                isFavourite = await _unitOfWork.Context.FavouritePhotographers.AnyAsync(l => l.UserId == userIdInt && l.PhotographerId == id);
+            }
+
             return new OkObjectResult(new
             {
                 user.Id,
@@ -86,8 +93,45 @@ namespace ZnymkyHub.Controllers
                 base64,
                 user.InstagramUrl,
                 duration,
-                user.PhoneNumber
+                user.PhoneNumber,
+                phFavourite = isFavourite
             });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> FavouritePhotographer(int photographerId)
+        {
+            var userId = _caller.Claims.FirstOrDefault(c => c.Type == "id");
+            var id = Convert.ToInt32(userId.Value);
+
+            var favouritePhotographer = new FavouritePhotographer
+            {
+                PhotographerId = photographerId,
+                UserId = id,
+            };
+
+            await _unitOfWork.Context.FavouritePhotographers.AddAsync(favouritePhotographer);
+            await _unitOfWork.CommitAsync();
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UnfavouritePhotographer(int photographerId)
+        {
+            var userId = _caller.Claims.FirstOrDefault(c => c.Type == "id");
+            var id = Convert.ToInt32(userId.Value);
+
+            var favouritePhotographer = await _unitOfWork.Context.FavouritePhotographers.FirstOrDefaultAsync(l => l.UserId == id && l.PhotographerId == photographerId);
+            if (favouritePhotographer != null)
+            {
+                _unitOfWork.Context.FavouritePhotographers.Remove(favouritePhotographer);
+                await _unitOfWork.CommitAsync();
+            }
+
+            return Ok();
         }
     }
 }
